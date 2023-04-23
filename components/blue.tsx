@@ -1,5 +1,5 @@
-import BluetoothSerial from "react-native-bluetooth-serial-next";
-import { Alert, PermissionsAndroid } from "react-native";
+import BluetoothSerial, { AndroidBluetoothDevice, iOSBluetoothDevice } from "react-native-bluetooth-serial-next";
+import { Alert, PermissionsAndroid, View } from "react-native";
 
 const ask_permissions = async () =>{
     let scan_granted;
@@ -42,6 +42,54 @@ const enable_bt = async () => {
     }
 }
 
-export {ask_permissions,
-        enable_bt
-        };
+//SMART HOME IS A TYPE WITH METHODS FOR WHAT I WANT , like to turn on leds and that stuff
+//let SmartHome;
+let IHouse: SmartHome;
+class SmartHome {
+    device: AndroidBluetoothDevice|iOSBluetoothDevice;
+    ledVoltage: string;
+
+    constructor(device:AndroidBluetoothDevice|iOSBluetoothDevice){ this.device = device;
+        console.log("Connected to device: ");
+        console.log(device.name)
+        this.ledVoltage = '0';
+        this.ledState(this.ledVoltage);
+    }
+    //it's wpm so you I can easily add sliders and that kind of thing
+    ledState(value: string){
+        BluetoothSerial.write("LED ",value)
+            .then(()=>{
+                console.log("Sent LED ",value);
+            })
+            .catch(()=>{
+                Alert.alert("ERROR SENDING BLUETOOTH MESSAGE");
+            })
+    }
+}
+
+const connect = async ()=> {
+    const Dev:Promise<AndroidBluetoothDevice|iOSBluetoothDevice> = await BluetoothSerial.connect("00:19:07:00:21:DD")
+        .then(async ()=>{
+            console.log("Conected");
+        })
+        .catch((error)=>{
+            Alert.alert("Couldn't connect to device, please reopen the app.");
+            console.warn(error);
+        });
+    IHouse = new SmartHome(Dev);
+}
+
+const ledTest = async ()=>{
+    await BluetoothSerial.write("a")
+        .then(()=>{console.log("Wrote");})
+        .catch(()=>{console.log("Error");});
+}
+
+export {
+    ask_permissions,
+    enable_bt, 
+    connect,
+    SmartHome,
+    IHouse,
+    ledTest,
+};

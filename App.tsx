@@ -2,7 +2,8 @@ import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { WelcomeScreen } from './components/Screens/welcome_screen';
-import { SearchDevices } from './components/Screens/search_devices';
+import { ConnectDevice } from './components/Screens/connect_device';
+import { LedScreen     } from './components/Screens/devices_screens/led';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +18,12 @@ const App = () =>  {
                 />
                 <Stack.Screen 
                     name="Scanning" 
-                    component={SearchDevices}
+                    component={ConnectDevice}
+                    options={{headerShown: false}}
+                />
+                <Stack.Screen
+                    name="Led0"
+                    component={LedScreen}
                     options={{headerShown: false}}
                 />
             </Stack.Navigator>

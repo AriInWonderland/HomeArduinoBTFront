@@ -28,6 +28,20 @@ export const styles = StyleSheet.create({
         margin: 15,
         height: '20%'
     },
+    deviceButton:{
+        borderWidth: 8,
+        color: "#ffffff",
+        borderColor: "#fff",
+        padding: 30,
+        borderRadius: 100,
+        width: 200,
+        height: 200,
+        alignSelf: 'center',
+        top: 100,
+        transform:[{
+            perspective: 100,
+        }],
+    },
 
     item_bg:{
         color: '#ffffff',

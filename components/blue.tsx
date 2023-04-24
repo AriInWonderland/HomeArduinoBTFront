@@ -46,18 +46,15 @@ const enable_bt = async () => {
 //let SmartHome;
 let IHouse: SmartHome;
 class SmartHome {
-    device: AndroidBluetoothDevice|iOSBluetoothDevice;
     ledVoltage: string;
 
-    constructor(device:AndroidBluetoothDevice|iOSBluetoothDevice){ this.device = device;
-        console.log("Connected to device: ");
-        console.log(device.name)
+    constructor(){ 
         this.ledVoltage = '0';
         this.ledState(this.ledVoltage);
     }
     //it's wpm so you I can easily add sliders and that kind of thing
-    ledState(value: string){
-        BluetoothSerial.write("LED ",value)
+    async ledState(value: string){
+        await BluetoothSerial.write("LED ",value)
             .then(()=>{
                 console.log("Sent LED ",value);
             })
@@ -68,15 +65,15 @@ class SmartHome {
 }
 
 const connect = async ()=> {
-    const Dev:Promise<AndroidBluetoothDevice|iOSBluetoothDevice> = await BluetoothSerial.connect("00:19:07:00:21:DD")
+    await BluetoothSerial.connect("00:19:07:00:21:DD")
         .then(async ()=>{
-            console.log("Conected");
+            console.log("Conected: ", await BluetoothSerial.isConnected());
         })
         .catch((error)=>{
             Alert.alert("Couldn't connect to device, please reopen the app.");
             console.warn(error);
         });
-    IHouse = new SmartHome(Dev);
+    IHouse = new SmartHome();
 }
 
 const ledTest = async ()=>{

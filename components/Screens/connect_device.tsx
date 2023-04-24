@@ -4,9 +4,7 @@ import { styles } from "../styles";
 import { connect, SmartHome, IHouse } from "../blue";
 
 export const ConnectDevice = ({navigation}) =>{
-    //let ready = false;
-    //connect().then(()=>{ready=true;console.log(IHouse);});
-    console.log(".");
+    connect();
     return(
         <View style={styles.container}>
             <Text style={styles.title}>Connected to device "device"</Text>

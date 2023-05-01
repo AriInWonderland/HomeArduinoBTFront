@@ -42,14 +42,23 @@ const enable_bt = async () => {
         });
 }
 
-const house_write = (device, value) =>{
-    BluetoothSerial.write(device)
-        .then(()=>{console.log("Sent initial data");})
-        .catch(()=>{Alert.alert("failed")});
+//SMART HOME IS A TYPE WITH METHODS FOR WHAT I WANT , like to turn on leds and that stuff
+//let SmartHome;
+let IHouse: SmartHome;
+class SmartHome {
+    ledVoltage: string;
+
+    constructor(){ 
+        this.ledVoltage = '0';
+        ledState(this.ledVoltage);
+    }
+    //it's wpm so you I can easily add sliders and that kind of thing
+}
+const ledState = (value: string | number) =>{
+    //BluetoothSerial.write("LED "+value)
     BluetoothSerial.write(value)
         .then(()=>{console.log("Sent data");})
-        .catch(()=>{Alert.alert("failed")})
-    BluetoothSerial.clear();
+        .catch(()=>{Alert.alert("failed")});
 }
 
 const connect = async ()=> {
@@ -60,11 +69,14 @@ const connect = async ()=> {
         .catch(()=>{
             Alert.alert("Failed to connect to the HC-05");
         });
+    IHouse = new SmartHome();
 }
 
 export {
     ask_permissions,
     enable_bt, 
     connect,
-    house_write,
+    SmartHome,
+    IHouse,
+    ledState,
 };
